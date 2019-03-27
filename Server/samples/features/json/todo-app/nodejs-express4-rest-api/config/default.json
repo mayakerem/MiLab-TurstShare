@@ -1,8 +1,0 @@
-{
-    "connection":{
-        "server"  : "sqlservermilab.database.windows.net",
-        "userName": "admin_maya",
-        "password": "milab2019!",
-        "options": { "encrypt": true, "database": "Drivers" }
-    }
-}
