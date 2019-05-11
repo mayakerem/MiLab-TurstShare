@@ -3,15 +3,24 @@ var TYPES = require('tedious').TYPES;
 var bodyParser = require('body-parser');
 router.use(bodyParser.json());
 
-/* GET all drivers. */
-router.get('/drivers', function (req, res) {
-
-    req.sql("select * from drivers_db for json path")
+/* GET all rides. */
+router.get('/rides', function (req, res) {
+//     const findAllQuery = 'SELECT * FROM reflections';
+//     try {
+//       const { rows, rowCount } = await db.query(findAllQuery);
+//       return res.status(200).send({ rows, rowCount });
+//     } catch(error) {
+//       return res.status(400).send(error);
+//     }
+// },
+   
+   
+    req.sql("select * from rides for json path")
         .into(res, '[]');
 });
 
 /* GET a driver with id as a phone number. */
-router.get('/drivers/', function (req, res) {
+router.get('/rides/', function (req, res) {
     
     req.sql("select * from drivers_db where drivers_db.DriverID = @id for json path, without_array_wrapper")
         .param('id', req.params.id, TYPES.Int)
@@ -58,25 +67,5 @@ router.post('/phonecontacts/:id/:contact/:contactid', function (req, res) {
         .param('id', 'contact', 'contactid', req.body, TYPES.NVarChar)
         .exec(res);
 });
-
-
-// /* PUT update task. */
-// router.put('/:id', function (req, res) {
-    
-//     req.sql("exec updateDrivers @id, @drivers_db")
-//         .param('id', req.params.id, TYPES.Int)
-//         .param('drivers_db', req.body, TYPES.NVarChar)
-//         .exec(res);
-
-// });
-
-// /*  . */
-// router.delete('/:id', function (req, res) {
-    
-//     req.sql("delete from drivers_db where id = @id")
-//         .param('id', req.params.id, TYPES.Int)
-//         .exec(res);
-
-// });
 
 module.exports = router;
