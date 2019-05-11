@@ -20,6 +20,7 @@ console.log('dotenv connected to .env');
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL
 });
+console.log('starting to connect to db');
 
 pool.on('connect', () => {
   console.log('connected to the db');

@@ -10,11 +10,13 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:autofillHints=""
         android:gravity="center"
         android:hint="Your Name"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@id/phone_number"
         app:layout_constraintEnd_toEndOf="@id/phone_number"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/phone_number"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,6 +29,7 @@
         android:inputType="phone"
         app:layout_constraintBottom_toTopOf="@id/next"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name" />
 
@@ -39,5 +42,19 @@
         app:layout_constraintEnd_toEndOf="@id/phone_number"
         app:layout_constraintStart_toStartOf="@id/phone_number"
         app:layout_constraintTop_toBottomOf="@id/phone_number" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="293dp"
+        android:layout_height="181dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginLeft="59dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="59dp"
+        android:layout_marginRight="59dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logi" />
 
 </android.support.constraint.ConstraintLayout>

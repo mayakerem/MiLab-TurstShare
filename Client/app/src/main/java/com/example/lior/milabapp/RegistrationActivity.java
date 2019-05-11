@@ -64,6 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
+            // Default function
             case PERMISSION_REQUEST_CONTACT: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showContactsScreen();
@@ -85,24 +86,33 @@ public class RegistrationActivity extends AppCompatActivity {
                     JSONObject contactJson = new JSONObject();
                     JSONArray contactsArr = new JSONArray();
 
-                    for (ContactResult result :
-                            results) {
+                    // Constructing Contact book JSON
+                    for (ContactResult result : results) {
                         JSONObject contact = new JSONObject();
+                        // Add name
                         contact.put("name", result.getDisplayName());
+                        // Add number
                         if (!result.getPhoneNumbers().isEmpty()) {
                             contact.put("phone_num", result.getPhoneNumbers().get(0).getNumber());
                         }
+                        // If they have a photo
+                        if (result.getPhoto() != null) {
+                            contact.put("image", result.getPhoto());
+                        }
+                        // Add this contact to te array of contacts for the JSON
                         contactsArr.put(contact);
                     }
 
                     contactJson.put("contacts", contactsArr);
+                    // Display JSON in log
                     Log.d("LIOR", "onActivityResult: " + contactJson.toString());
                     Intent intent = new Intent(RegistrationActivity.this, SearchContactsActivity.class);
                     intent.putExtra(SearchContactsActivity.CONTACT_NAME, contactJson.getJSONArray("contacts").getJSONObject(0).getString("name"));
+
                     startActivity(intent);
                     finish();
-                } catch (JSONException ignored) {
-                }
+
+                } catch (JSONException ignored) { }
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(RegistrationActivity.this, "No contacts were selected", Toast.LENGTH_LONG).show();
             }
