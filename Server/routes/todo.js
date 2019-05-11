@@ -1,5 +1,7 @@
 ﻿var router = require('express').Router();
 var TYPES = require('tedious').TYPES;
+var bodyParser = require('body-parser');
+router.use(bodyParser.json());
 
 /* GET all drivers. */
 router.get('/drivers', function (req, res) {
@@ -9,7 +11,7 @@ router.get('/drivers', function (req, res) {
 });
 
 /* GET a driver with id as a phone number. */
-router.get('/drivers/:id', function (req, res) {
+router.get('/drivers/', function (req, res) {
     
     req.sql("select * from drivers_db where drivers_db.DriverID = @id for json path, without_array_wrapper")
         .param('id', req.params.id, TYPES.Int)
@@ -18,7 +20,17 @@ router.get('/drivers/:id', function (req, res) {
 
 /* POST add a ride. */
 router.post('/drivers/:id/:name/:riderid', function (req, res) {
+    console.log("Received save post request from");
+    console.log(request.body);
+    // TODO send post request in body
     
+    var jsonRequest = request.body;
+    var jsonResponse = {};
+
+    jsonResponse.result = jsonRequest.val1 + jsonRequest.val2;
+
+    response.send(jsonResponse);
+
     req.sql("INSERT INTO drivers_db (DriverID, DriverName, RiderID) VALUES (@id, @name, @riderid)")
         .param('id', 'name', 'riderid', req.body, TYPES.NVarChar)
         .exec(res);

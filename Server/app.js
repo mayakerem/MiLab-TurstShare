@@ -2,6 +2,8 @@
 var config = require('config');
 var bodyParser = require('body-parser');
 var tediousExpress = require('express4-tedious');
+// load all env variables from .env file into process.env object.
+var dotenv = require(‘dotenv’).config()
 
 var app = express();
 app.use(function (req, res, next) {
@@ -25,3 +27,23 @@ var server = app.listen(app.get('port'), function() {
 });
 
 module.exports = app;
+
+
+//// New suggesstions
+
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
+
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
+});
