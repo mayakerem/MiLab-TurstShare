@@ -3,12 +3,20 @@
 var bodyParser = require('body-parser');
 var tediousExpress = require('express4-tedious');
 
+
 var app = express();
 
-// Add route code Here
- app.get('/', (req, res) => {
-  res.send('Welcome to Our SCHOOL API');
+app.get('/', (req, res) => {
+  console.log("Got GET REQUEST from CLIENT");
+  res.json({"foo": "bar"});
 });
+
+// Add route code Here
+ app.post('/', (req, res) => {
+  console.log("Got POST REQUEST from CLIENT");
+  res.json({"foo": "bar"});
+});
+
 
 //Connecting to local SQL 
 const { Pool } = require('pg');

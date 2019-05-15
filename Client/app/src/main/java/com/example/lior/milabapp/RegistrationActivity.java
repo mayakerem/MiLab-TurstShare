@@ -14,6 +14,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wafflecopter.multicontactpicker.ContactResult;
 import com.wafflecopter.multicontactpicker.MultiContactPicker;
 
@@ -106,11 +115,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     contactJson.put("contacts", contactsArr);
                     // Display JSON in log
                     Log.d("LIOR", "onActivityResult: " + contactJson.toString());
-                    Intent intent = new Intent(RegistrationActivity.this, SearchContactsActivity.class);
-                    intent.putExtra(SearchContactsActivity.CONTACT_NAME, contactJson.getJSONArray("contacts").getJSONObject(0).getString("name"));
 
-                    startActivity(intent);
-                    finish();
+                    sendJSON(contactJson);
+
 
                 } catch (JSONException ignored) { }
             } else if (resultCode == RESULT_CANCELED) {
@@ -118,5 +125,33 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }
     }
+    // Function handeling Volley
+    private void sendJSON (JSONObject contactJson){
+        // Handeling Volley and sending the JSON to the server
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        final String url = "https://localhost:3000";
+
+        queue.add(new JsonObjectRequest(Request.Method.POST, url, contactJson,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("LIOR", "Response is:- " + response);
+                        Intent intent = new Intent(RegistrationActivity.this, SearchContactsActivity.class);
+                        //SERVER returns new JSON with random 6 drivers
+                        intent.putExtra(SearchContactsActivity.CONTACT_NAME, response.toString());
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("LIOR", "Error - " + error);
+            }
+
+            }));
+    }
 
 }
+
