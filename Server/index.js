@@ -4,16 +4,27 @@ var bodyParser = require('body-parser');
 var tediousExpress = require('express4-tedious');
 
 
+
 var app = express();
 
 app.get('/', (req, res) => {
-  console.log("Got GET REQUEST from CLIENT");
+  console.log("GET");
   res.json({"foo": "bar"});
 });
 
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 // Add route code Here
- app.post('/', (req, res) => {
-  console.log("Got POST REQUEST from CLIENT");
+app.post('/listen', (req, res) => {
+  console.log("Recieved " + JSON.stringify(req.body));
+  if (Object.keys(req.body).length < 6 ){
+    console.log("under 6, going to return the whole body");
+    res.json(req.body);
+  } else {
+    console.log("over 6, going to return first 6");
+    
+  }
   res.json({"foo": "bar"});
 });
 

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -129,7 +130,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void sendJSON (JSONObject contactJson){
         // Handeling Volley and sending the JSON to the server
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "https://localhost:3000";
+        final String url = "http://10.0.2.2:3000/listen";
 
         queue.add(new JsonObjectRequest(Request.Method.POST, url, contactJson,
                 new Response.Listener<JSONObject>() {
