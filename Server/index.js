@@ -1,19 +1,17 @@
-﻿var express = require('express');
+﻿let express = require('express');
 //var config = require('config');
-var bodyParser = require('body-parser');
-var tediousExpress = require('express4-tedious');
+let bodyParser = require('body-parser');
+let tediousExpress = require('express4-tedious');
 // My created class
-var User = require('./user');
+let User = require('./user');
 
 let a = new User("a","b");
 a.printit();
 
-var app = express();
-
+let app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
 
 //Route code 
 app.post('/listen', (req, res) => {
@@ -21,29 +19,52 @@ app.post('/listen', (req, res) => {
   let contacts_arr = parserJSON(JSON.stringify(req.body));
 
   //if (Object.keys(req.body).length < 6 ){
-    if (contacts_arr.length <= 6 ){
+    if (req.body.contacts.length <= 6 ){
     console.log("under 6, going to return the whole body");
     res.json(req.body);
   } else {
     console.log("over 6, going to return first 6");
-    console.log(contacts_arr);
+    let random_arr = randomUniqueContacts(req.body.contacts);
+    res.json({random_arr});
   }
-  res.json({"foo": "bar"});
+  console.log("sent - " - res.body);
 });
 
+//Function that parses the JSON into an array of type User
 function parserJSON(json){
-  var obj = JSON.parse(json);
-  console.log("------------------------------------------------");
-  console.log(obj);
-  console.log(obj.contacts);
-  var arr = new Array();
-  for (i in obj){
-    console.log("=----entered for i in obj----- ");
-    const user_temp = new User(obj.contacts.name, obj.contacts.phone_num);
-    console.log(user_temp);
+  let obj = JSON.parse(json);
+  let arr = new Array();
+  for (i in obj.contacts){
+    const user_temp = new User(obj.contacts[i].name, obj.contacts[i].phone_num);
     arr.concat(user_temp);
   }
   return arr;
+}
+
+//Function that returns 6 random
+function randomUniqueContacts(original_arr){
+  let unique_arr = original_arr.filter(unique);
+  let unique_arr_six = new Array();
+  let i = 0;
+  while (i < 6){
+    unique_arr_six[i] = unique_arr[i];
+    i++;
+  }
+  return unique_arr_six;
+}
+
+// function print(arr){
+//   let str = " ";
+//   for (i in arr){
+//     str = str + arr[i].name + " - ";
+//   }
+//   return str;
+// }
+
+
+//Unique user id
+const unique = (value, index, self) => {
+  return self.indexOf(value) === index
 }
 
 //Connecting to local SQL 

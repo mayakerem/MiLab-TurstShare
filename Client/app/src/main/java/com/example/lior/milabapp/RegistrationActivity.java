@@ -130,7 +130,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private void sendJSON (JSONObject contactJson){
         // Handeling Volley and sending the JSON to the server
         final RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "http://10.0.2.2:3000/listen";
+        //For school
+        //final String url = "http://10.0.2.2:3000/listen";
+
+        //For Home
+        final String url = "http://192.168.1.24:3000/listen";
 
         queue.add(new JsonObjectRequest(Request.Method.POST, url, contactJson,
                 new Response.Listener<JSONObject>() {
@@ -138,7 +142,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         Log.d("LIOR", "Response is:- " + response);
-                        Intent intent = new Intent(RegistrationActivity.this, SearchContactsActivity.class);
+                        Intent intent = new Intent(RegistrationActivity.this, Results.class);
                         //SERVER returns new JSON with random 6 drivers
                         intent.putExtra(SearchContactsActivity.CONTACT_NAME, response.toString());
                         startActivity(intent);
